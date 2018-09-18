@@ -29,7 +29,10 @@ class Importer(ImporterProtocol):
                                                 tags=data.EMPTY_SET,
                                                 links=data.EMPTY_SET,
                                                 postings=[])
-                data.create_simple_posting(data_transaction, self.file_account(file), transaction.amount, "GBP")
+
+                account = self.file_account(file)
+                if account:
+                    data.create_simple_posting(data_transaction, account, transaction.amount, "GBP")
                 transactions.append(data_transaction)
         return transactions
 
