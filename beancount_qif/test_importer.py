@@ -4,7 +4,7 @@ from hamcrest.core import assert_that
 from hamcrest.core.core import is_
 from pytest import fixture
 
-from beancount_qif.beancount_qif import Importer
+from beancount_qif.importer import Importer
 
 
 @fixture
