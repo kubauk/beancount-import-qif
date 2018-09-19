@@ -44,7 +44,7 @@ class Importer(ImporterProtocol):
     def file_name(self, file):
         pass
 
-    def file_data(self, file):
+    def file_date(self, file):
        pass
 
     def _mapping_for_file(self, file):
