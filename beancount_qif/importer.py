@@ -3,18 +3,20 @@ import re
 
 from beancount.core import data
 from beancount.ingest.importer import ImporterProtocol
+from beancount.utils.defdict import ImmutableDictWithDefault
 from qifparse.parser import QifParser
 
-
 class Importer(ImporterProtocol):
-    _file_name_re = re.compile(".qif$")
+    def __init__(self, file_name_mapping=ImmutableDictWithDefault({re.compile(".qif$"): "Expenses:QIF"})) -> None:
+        super().__init__()
+        self._file_name_mapping = file_name_mapping
 
     def name(self):
         return ImporterProtocol.name(self)
 
     def identify(self, file):
-        abspath = os.path.abspath(file.name)
-        return self._file_name_re.search(abspath) is not None
+        for_file = self._mapping_for_file(file)
+        return for_file is not None
 
     def extract(self, file, existing_entries=None):
         transactions = list()
@@ -37,10 +39,17 @@ class Importer(ImporterProtocol):
         return transactions
 
     def file_account(self, file):
-        return None
+        return self._mapping_for_file(file)
 
     def file_name(self, file):
         pass
 
     def file_data(self, file):
        pass
+
+    def _mapping_for_file(self, file):
+        abspath = os.path.abspath(file.name)
+        for mapping in self._file_name_mapping.keys():
+            if mapping.search(abspath) is not None:
+                return self._file_name_mapping[mapping]
+        return None
