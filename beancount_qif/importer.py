@@ -6,6 +6,7 @@ from beancount.ingest.importer import ImporterProtocol
 from beancount.utils.defdict import ImmutableDictWithDefault
 from qifparse.parser import QifParser
 
+
 class Importer(ImporterProtocol):
     def __init__(self, file_name_mapping=ImmutableDictWithDefault({re.compile(".qif$"): "Expenses:QIF"})) -> None:
         super().__init__()
@@ -24,13 +25,13 @@ class Importer(ImporterProtocol):
             parser = QifParser.parse(f)
             for transaction in parser.get_transactions()[0]:
                 data_transaction = data.Transaction(payee=None,
-                                                date=transaction.date.date(),
-                                                flag=ImporterProtocol.FLAG,
-                                                narration=transaction.payee,
-                                                meta=data.new_metadata(file.name, 0),
-                                                tags=data.EMPTY_SET,
-                                                links=data.EMPTY_SET,
-                                                postings=[])
+                                                    date=transaction.date.date(),
+                                                    flag=ImporterProtocol.FLAG,
+                                                    narration=transaction.payee,
+                                                    meta=data.new_metadata(file.name, 0),
+                                                    tags=data.EMPTY_SET,
+                                                    links=data.EMPTY_SET,
+                                                    postings=[])
 
                 account = self.file_account(file)
                 if account:
@@ -45,7 +46,7 @@ class Importer(ImporterProtocol):
         pass
 
     def file_date(self, file):
-       pass
+        pass
 
     def _mapping_for_file(self, file):
         abspath = os.path.abspath(file.name)
