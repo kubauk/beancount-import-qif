@@ -1,12 +1,11 @@
-import datetime
 import os
 import re
 from typing import Optional
 
-from beancount.core import data
+from beancount.core import data, flags
 from beancount.utils.defdict import ImmutableDictWithDefault
-from beangulp import Importer, cache
-from beangulp.importer import ImporterProtocol
+from beangulp.importer import Importer
+from beangulp import cache
 from qifparse.parser import QifParser
 
 
@@ -23,7 +22,7 @@ class QIFImporter(Importer):
             for transaction in parser.get_transactions()[0]:
                 data_transaction = data.Transaction(payee=None,
                                                     date=transaction.date.date(),
-                                                    flag=ImporterProtocol.FLAG,
+                                                    flag=flags.FLAG_OKAY,
                                                     narration=transaction.payee,
                                                     meta=data.new_metadata(file.name, 0),
                                                     tags=data.EMPTY_SET,

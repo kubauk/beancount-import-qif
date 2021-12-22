@@ -1,3 +1,3 @@
 import beancount_qif.importer
 
-Importer = beancount_qif.importer.Importer
+Importer = beancount_qif.importer.QIFImporter
